@@ -43,16 +43,19 @@ class CredentialDao {
         }
     }
 
-    suspend fun getAll(): List<WebCredential> {
+    suspend fun getAllInPage(limit: Int, offset: Long): List<WebCredential> {
         return newSuspendedTransaction(Dispatchers.IO) {
-            WebCredentialsTable.selectAll().map {
-                WebCredential(
-                    id = it[WebCredentialsTable.id],
-                    uri = it[WebCredentialsTable.uri],
-                    login = it[WebCredentialsTable.login],
-                    password = it[WebCredentialsTable.password]
-                )
-            }
+            WebCredentialsTable.selectAll()
+                .limit(limit, offset)
+                .map {
+                    WebCredential(
+                        id = it[WebCredentialsTable.id],
+                        uri = it[WebCredentialsTable.uri],
+                        login = it[WebCredentialsTable.login],
+                        password = it[WebCredentialsTable.password]
+                    )
+                }
+
         }
     }
 }

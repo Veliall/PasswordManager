@@ -33,6 +33,7 @@ fun PaginatedCredentialsList() {
     var currentPage by remember { mutableStateOf(0) }
     var items by remember { mutableStateOf<List<WebCredential>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
+    val itemsOnPage = 10;
 
     val dao = remember { CredentialDao() }
     val scope = rememberCoroutineScope()
@@ -41,7 +42,7 @@ fun PaginatedCredentialsList() {
     fun loadPage(page: Int) {
         scope.launch {
             isLoading = true
-            items = dao.getAll()
+            items = dao.getAllInPage(itemsOnPage, currentPage * itemsOnPage.toLong())
             isLoading = false
         }
     }

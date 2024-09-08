@@ -7,6 +7,7 @@ import database.DatabaseFactory
 import ui.PaginatedCredentialsList
 
 fun main() = application {
+    DatabaseFactory.init()
     Window(
         title = "Password Manager",
         onCloseRequest = ::exitApplication
@@ -18,7 +19,6 @@ fun main() = application {
 @Composable
 @Preview
 fun App() {
-    DatabaseFactory.init()
     MaterialTheme {
         PaginatedCredentialsList()
     }
