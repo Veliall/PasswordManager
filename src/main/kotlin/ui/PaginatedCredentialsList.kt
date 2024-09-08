@@ -1,4 +1,6 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
+package ui
+
+import dto.WebCredentialsDto
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,29 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
+import fetchCredentials
 import kotlinx.coroutines.launch
-import java.net.URI
-
-@Composable
-@Preview
-fun App() {
-    MaterialTheme {
-        PaginatedCredentialsList(
-            itemsPerPage = 10,
-            fetchData = { page ->
-                fetchCredentials(page, itemsPerPage = 10)
-            }
-        )
-    }
-}
 
 
 @Composable
-fun PaginatedCredentialsList(
-    itemsPerPage: Int,
-    fetchData: suspend (Int) -> List<WebCredentialsDto>
-) {
+fun PaginatedCredentialsList() {
     // Состояние текущей страницы
     var currentPage by remember { mutableStateOf(0) }
     var items by remember { mutableStateOf<List<WebCredentialsDto>>(emptyList()) }
@@ -55,7 +40,7 @@ fun PaginatedCredentialsList(
     fun loadPage(page: Int) {
         scope.launch {
             isLoading = true
-            items = fetchData(page)
+            items = fetchCredentials(page, itemsPerPage = 10)
             isLoading = false
         }
     }
@@ -111,15 +96,3 @@ fun PaginatedCredentialsList(
     }
 }
 
-// Симуляция функции для загрузки данных
-suspend fun fetchCredentials(page: Int, itemsPerPage: Int): List<WebCredentialsDto> {
-    delay(1000) // Имитация задержки сети или базы данных
-    val start = page * itemsPerPage + 1
-    return (start until start + itemsPerPage).map {
-        WebCredentialsDto(
-            URI("https://example.com/$it"),
-            login = "user$it",
-            password = "password$it"
-        )
-    }
-}

@@ -1,3 +1,6 @@
+package ui
+
+import dto.WebCredentialsDto
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
