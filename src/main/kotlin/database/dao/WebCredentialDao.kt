@@ -14,7 +14,7 @@ data class WebCredential(
     val password: String
 )
 
-class CredentialDao : Dao {
+class WebCredentialDao : Dao {
     suspend fun insert(webCredential: WebCredential) = dbQuery {
         WebCredentialsTable.insert {
             it[uri] = webCredential.uri
